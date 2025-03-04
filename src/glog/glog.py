@@ -1,7 +1,4 @@
-#! /usr/bin/env python3
-
 from pygit2 import Repository
-from pygit2.enums import BranchType
 
 repo = Repository("../../../dotfiles")
 for ref in repo.references:
