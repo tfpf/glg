@@ -6,9 +6,11 @@ class GitRepositoryLogVisualiser:
     def __init__(self, cfg: argparse.Namespace):
         self._repository = pygit2.Repository(".")
         if cfg.all:
-            self._references = [self._repository.references.get(reference) for reference in self._repository.references]
+            self._references = [self._repository.references.get(reference).resolve() for reference in self._repository.references]
         else:
-            self._references = [self._repository.head]
+            self._references = [self._repository.head.resolve()]
+        for reference in self._references:
+            print(reference.target, reference.shorthand)
 
     def __repr__(self):
         return f"{self.__class__.__name__}(repository={self._repository.path}, references={self._references})"
