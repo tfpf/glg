@@ -3,12 +3,12 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "glog"
+name = "glg"
 version = "0.0.0"
 authors = [
     { name = "Vishal Pankaj Chandratreya" },
 ]
-description = "View the commit graph of a Git repository"
+description = "It's a surprise tool that will help us later"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
@@ -24,4 +24,4 @@ pygit2 = ["pygit2"]
 system-packages = true
 
 [tool.ruff.lint.per-file-ignores]
-"src/glog/glog.py" = ["T201"]
+"src/glg/glg.py" = ["T201"]
