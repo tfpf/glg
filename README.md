@@ -1,3 +1,3 @@
 # GLG
 
-It's a surprise tool that will help us later!
+Work in progress.
