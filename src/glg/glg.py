@@ -9,6 +9,7 @@ class GitRepositoryLogVisualiser:
             self._references = [self._repository.references.get(reference) for reference in self._repository.references]
         else:
             self._references = [self._repository.head]
+        self._last_column_in_use = -1
 
     def __repr__(self):
         return f"{self.__class__.__name__}(repository={self._repository.path}, references={self._references})"
@@ -21,6 +22,10 @@ class GitRepositoryLogVisualiser:
         print(f"\x1b[96m{reference.shorthand}\x1b[m")
         for commit in self._repository.walk(reference.resolve().target):
             print(commit)
+
+    def _next_available_column(self) -> int:
+        self._last_column_in_use += 1
+        return self._last_column_in_use
 
 
 def main():
