@@ -18,7 +18,9 @@ class GitRepositoryLogVisualiser:
             self._visualise_reference(reference)
 
     def _visualise_reference(self, reference: pygit2.Reference):
-        print(self._repository.get(reference.resolve().target), reference.shorthand)
+        print(f"\x1b[96m{reference.shorthand}\x1b[m")
+        for commit in self._repository.walk(reference.resolve().target):
+            print(commit)
 
 
 def main():
