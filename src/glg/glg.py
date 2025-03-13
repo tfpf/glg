@@ -1,4 +1,5 @@
 import pygit2
+import collections
 import argparse
 
 
@@ -10,6 +11,8 @@ class GitRepositoryLogVisualiser:
         else:
             self._references = [self._repository.head]
         self._last_column_in_use = -1
+        self._seen_object_ids = set()
+        self._parent_commits = collections.defaultdict(list)
 
     def __repr__(self):
         return f"{self.__class__.__name__}(repository={self._repository.path}, references={self._references})"
@@ -20,8 +23,14 @@ class GitRepositoryLogVisualiser:
 
     def _visualise_reference(self, reference: pygit2.Reference):
         print(f"\x1b[96m{reference.shorthand}\x1b[m")
-        for commit in self._repository.walk(reference.resolve().target):
-            print(commit)
+        col = self._next_available_column()
+        target = reference.resolve().target
+        walker = self._repository.walk(target)
+        for seen_object_id in self._seen_object_ids:
+            walker.hide(seen_object_id)
+        for commit in walker:
+            self._parent_commits[commit].extend(commit.parents)
+        self._seen_object_ids.add(target)
 
     def _next_available_column(self) -> int:
         self._last_column_in_use += 1
@@ -35,6 +44,7 @@ def main():
 
     visualiser = GitRepositoryLogVisualiser(cfg)
     visualiser.visualise()
+    print(visualiser._parent_commits)
 
 if __name__ == "__main__":
     main()
